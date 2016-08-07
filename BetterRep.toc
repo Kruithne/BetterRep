@@ -8,3 +8,16 @@
 ## X-License: All Rights Reserved. Modifications welcome on GitHub: https://github.com/Kruithne/BetterRep
 
 BetterRep.lua
+localization/default.lua
+localization/deDE.lua
+localization/esES.lua
+localization/esMX.lua
+localization/frFR.lua
+localization/itIT.lua
+localization/koKR.lua
+localization/ptBR.lua
+localization/ptPT.lua
+localization/ruRU.lua
+localization/zhCN.lua
+localization/zhTW.lua
+BetterRepData.lua
