@@ -4,7 +4,7 @@
 	
 	https://github.com/Kruithne/BetterRep
 
-	localization/ptBR.lua - Portuguese localization strings.
+	localization/ptBR.lua - Spanish localization strings.
 ]]
 
 
