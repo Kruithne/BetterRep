@@ -13,4 +13,7 @@ if GetLocale() == "ptBR" or GetLocale() == "ptPT" then
 
 	-- Generic
 	L["HEADER_REPUTATION"] = "Reputação";
+
+	-- Expansion titles.
+	L["EXPANSION_VANILLA"] = "Clássico";
 end

@@ -13,7 +13,7 @@ local L = BetterRep.L;
 L["HEADER_REPUTATION"] = "Reputation";
 
 -- Expansion titles.
-L["EXPANSION_VANILLA"] = "Vanilla";
+L["EXPANSION_VANILLA"] = "Classic";
 L["EXPANSION_TBC"] = "The Burning Crusade";
 L["EXPANSION_WOTLK"] = "Wrath of the Lich King";
 L["EXPANSION_CATA"] = "Cataclysm";

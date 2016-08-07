@@ -13,4 +13,7 @@ if GetLocale() == "esMX" then
 
 	-- Generic
 	L["HEADER_REPUTATION"] = "Reputación";
+
+	-- Expansion titles.
+	L["EXPANSION_VANILLA"] = "Clásico";
 end
