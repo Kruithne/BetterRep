@@ -8,7 +8,7 @@
 ]]
 
 
-if GetLocale() == "ptBR" then
+if GetLocale() == "ptBR" or GetLocale() == "ptPT" then
 	local L = BetterRep.L;
 
 	-- Generic
