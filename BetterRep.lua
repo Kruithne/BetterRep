@@ -294,12 +294,17 @@ B.ShowReputation = function()
 
 				if not skip then
 					local factionName, desc, standing, barMin, barMax, barValue = GetFactionInfoByID(factionID);
+					local _, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID);
 					local bar = B.Helper_CreateRepBar(realIndex);
+
+					if friendTextLevel ~= nil then
+						bar.text:SetText(friendTextLevel);
+					else
+						bar.text:SetText(_G["FACTION_STANDING_LABEL" .. standing]);
+					end
 
 					local colour = FACTION_BAR_COLORS[standing];
 					bar:SetStatusBarColor(colour.r, colour.g, colour.b, 1);
-
-					bar.text:SetText(_G["FACTION_STANDING_LABEL" .. standing]);
 					bar.title:SetText(factionName);
 					bar:SetMinMaxValues(barMin, barMax);
 					bar:SetValue(barValue);
