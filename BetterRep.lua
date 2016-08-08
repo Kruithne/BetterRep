@@ -10,6 +10,7 @@
 BetterRep = {
 	["Constants"] = {
 		["LANDING_BUTTONS_PER_ROW"] = 3,
+		["REP_BARS_PER_ROW"] = 3,
 	},
 };
 
@@ -94,6 +95,18 @@ B.ClearReputationFrame = function()
 	if B.BackButton ~= nil then
 		B.BackButton:Hide();
 	end
+
+	-- Hide existing rep bars.
+	local barIndex = 1;
+	while true do
+		local bar = _G["BetterRepStatusBar" .. barIndex];
+		if bar ~= nil then
+			bar:Hide();
+			barIndex = barIndex + 1;
+		else
+			break;
+		end
+	end
 end
 
 B.Helper_CreateTexture = function(frame, data)
@@ -103,7 +116,10 @@ B.Helper_CreateTexture = function(frame, data)
 		tex:SetSize(data.size[1], data.size[2]);
 	end
 
-	tex:SetAllPoints(true);
+	if not data.noAnchor then
+		tex:SetAllPoints(true);
+	end
+
 	tex:SetTexture(data.texture);
 
 	if data.texCoord then
@@ -153,6 +169,73 @@ B.Event_OnLandingButtonClick = function(self)
 	B.ShowReputation();
 end
 
+B.Helper_CreateRepBar = function(index)
+	local name = "BetterRepStatusBar" .. index;
+	local bar = _G[name];
+
+	if bar then
+		return bar;
+	end
+
+	bar = CreateFrame("StatusBar", name, B.Frame);
+	bar:SetSize(190, 14);
+
+	local bg = bar:CreateTexture("$parentBG", "BACKGROUND");
+	bg:SetVertexColor(0, 0, 0, 0.4);
+
+	local borderTex = {
+		["name"] = "$parentBorderLeft",
+		["size"] = {16, 0},
+		["noAnchor"] = true,
+		["texCoord"] = {0, 0.0625, 0, 0.75},
+		["texture"] = [[Interface\AchievementFrame\UI-Achievement-ProgressBar-Border]]
+	};
+
+	local borderLeft = B.Helper_CreateTexture(bar, borderTex);
+	borderLeft:SetPoint("TOPLEFT", -6, 5);
+	borderLeft:SetPoint("BOTTOMLEFT", -6, -5);
+
+	borderTex.texCoord = {0.812, 0.8745, 0, 0.75};
+	borderTex.name = "$parentBorderRight";
+	local borderRight = B.Helper_CreateTexture(bar, borderTex);
+	borderRight:SetPoint("TOPRIGHT", 6, 5);
+	borderRight:SetPoint("BOTTOMRIGHT", 6, -5);
+
+	borderTex.texCoord = {0.0625, 0.812, 0, 0.75};
+	borderTex.name = "$parentBorderCenter";
+	local borderCenter = B.Helper_CreateTexture(bar, borderTex);
+	borderCenter:SetPoint("TOPLEFT", borderLeft, "TOPRIGHT");
+	borderCenter:SetPoint("BOTTOMRIGHT", borderRight, "BOTTOMLEFT");
+
+	local text = bar:CreateFontString("$parentText", "OVERLAY", "GameFontHighlightSmall");
+	text:SetJustifyV("TOP");
+	text:SetSize(0, 0);
+	text:SetPoint("CENTER", 0, 0);
+	bar.text = text;
+
+	local title = bar:CreateFontString("$parentTitle", "OVERLAY", "Game15Font_o1");
+	title:SetPoint("BOTTOMLEFT", bar, "TOPLEFT", 5, 5);
+	bar.title = title;
+
+	if index > 1 then
+		if mod(index - 1, C.REP_BARS_PER_ROW) == 0 then
+			-- Reached the end of a row, push the bar onto the next row.
+			bar:SetPoint("TOP", _G["BetterRepStatusBar" .. index - C.REP_BARS_PER_ROW], "BOTTOM", 0, -30);
+		else
+			-- Add the bar onto the end of the current row.
+			bar:SetPoint("LEFT", _G["BetterRepStatusBar" .. index - 1], "RIGHT", 20, 0);
+		end
+	else
+		-- This is the first bar, anchor to the main frame.
+		bar:SetPoint("TOPLEFT", 45, -105);
+	end
+
+	bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]]);
+
+	--bar:GetStatusBarTexture():SetDrawLayer("BORDER");
+	return bar;
+end
+
 B.ShowReputation = function()
 	local data = B.Expansions[B.CurrentExpansion];
 	B.ClearLandingButtons(); -- Clear landing buttons.
@@ -164,7 +247,7 @@ B.ShowReputation = function()
 	if B.BackButton == nil then
 		local button = CreateFrame("BUTTON", "$parentBackButton", B.Frame);
 		button:SetSize(32, 32);
-		button:SetPoint("BOTTOMLEFT", 20, 20);
+		button:SetPoint("BOTTOMRIGHT", -20, 20);
 
 		local size = {32, 32};
 
@@ -189,14 +272,27 @@ B.ShowReputation = function()
 	end
 	B.BackButton:Show();
 
+	-- Create rep bars.
 	local factionList = B.Factions[B.CurrentExpansion];
 	local playerFaction = UnitFactionGroup("player");
+	local realIndex = 1;
 
 	for react, factions in pairs(factionList) do
 		if react == "All" or playerFaction == react then
 			for i = 1, #factions do
-				local factionName = GetFactionInfoByID(factions[i]);
-				print(factionName);
+				local factionName, desc, standing, barMin, barMax, barValue = GetFactionInfoByID(factions[i]);
+				local bar = B.Helper_CreateRepBar(realIndex);
+
+				local colour = FACTION_BAR_COLORS[standing];
+				bar:SetStatusBarColor(colour.r, colour.g, colour.b, 1);
+
+				bar.text:SetText(_G["FACTION_STANDING_LABEL" .. standing]);
+				bar.title:SetText(factionName);
+				bar:SetMinMaxValues(barMin, barMax);
+				bar:SetValue(barValue);
+				bar:Show();
+
+				realIndex = realIndex + 1;
 			end
 		end
 	end
