@@ -238,7 +238,6 @@ B.Helper_CreateRepBar = function(index)
 	bar:SetScript("OnEnter", B.Event_OnRepBarEnter);
 	bar:SetScript("OnLeave", B.Event_OnRepBarLeave);
 
-	--bar:GetStatusBarTexture():SetDrawLayer("BORDER");
 	return bar;
 end
 
