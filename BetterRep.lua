@@ -322,7 +322,7 @@ B.ShowReputation = function()
 					bar:Show();
 
 					bar.dataText = bar.text:GetText();
-					bar.dataValues = barValue .. " / " .. barMax;
+					bar.dataValues = barValue - barMin .. " / " .. barMax - barMin;
 
 					realIndex = realIndex + 1;
 				end
