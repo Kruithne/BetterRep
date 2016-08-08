@@ -235,8 +235,19 @@ B.Helper_CreateRepBar = function(index)
 	bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]]);
 	bar:GetStatusBarTexture():SetDrawLayer("BORDER");
 
+	bar:SetScript("OnEnter", B.Event_OnRepBarEnter);
+	bar:SetScript("OnLeave", B.Event_OnRepBarLeave);
+
 	--bar:GetStatusBarTexture():SetDrawLayer("BORDER");
 	return bar;
+end
+
+B.Event_OnRepBarEnter = function(self)
+	self.text:SetText(self.dataValues);
+end
+
+B.Event_OnRepBarLeave = function(self)
+	self.text:SetText(self.dataText);
 end
 
 B.ShowReputation = function()
@@ -309,6 +320,9 @@ B.ShowReputation = function()
 					bar:SetMinMaxValues(barMin, barMax);
 					bar:SetValue(barValue);
 					bar:Show();
+
+					bar.dataText = bar.text:GetText();
+					bar.dataValues = barValue .. " / " .. barMax;
 
 					realIndex = realIndex + 1;
 				end
