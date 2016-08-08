@@ -21,8 +21,12 @@ local C = BetterRep.Constants;
 B.ShowFrame = function()
 	if B.Frame == nil then
 		B.CreateFrame();
-		B.CurrentExpansion = 0;
+		B.CurrentExpansion = nil;
 		B.ShowLanding();
+	end
+
+	if B.CurrentExpansion then
+		B.ShowReputation();
 	end
 
 	B.Frame:Show();
@@ -333,6 +337,7 @@ end
 B.ShowLanding = function()
 	-- Clear reputation frame
 	B.ClearReputationFrame();
+	B.CurrentExpansion = nil;
 
 	-- Create a button for each expansion.
 	local prevButton = nil;
