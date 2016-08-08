@@ -12,7 +12,7 @@ if GetLocale() == "zhTW" then
 	local L = BetterRep.L;
 
 	-- Generic
-	L["HEADER_REPUTATION"] = "聲譽";
+	L["HEADER_REPUTATION"] = "聲望";
 
 	-- Expansion titles.
 	L["EXPANSION_VANILLA"] = "艾澤拉斯";
