@@ -166,12 +166,6 @@ B.ShowReputation = function()
 		button:SetSize(32, 32);
 		button:SetPoint("BOTTOMLEFT", 20, 20);
 
-		local normalTexture = button:CreateTexture("$parentNormalTexture", "ARTWORK");
-		normalTexture:SetAllPoints(true);
-		normalTexture:SetSize(32, 32);
-		normalTexture:SetTexture([[Interface\BUTTONS\UI-SpellbookIcon-PrevPage-Up]]);
-		button:SetNormalTexture(normalTexture);
-
 		local size = {32, 32};
 
 		button:SetNormalTexture(B.Helper_CreateTexture(button, {
