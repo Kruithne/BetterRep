@@ -32,7 +32,7 @@ B.CreateFrame = function()
 	local frame = CreateFrame("FRAME", "BetterRepFrame", UIParent);
 	frame:SetPoint("CENTER", 0, 0);
 	frame:SetWidth(700);
-	frame:SetHeight(550);
+	frame:SetHeight(535);
 	frame:SetBackdrop({
 		edgeFile = [[Interface\DialogFrame\UI-DialogBox-Border]],
 		edgeSize = 32,
