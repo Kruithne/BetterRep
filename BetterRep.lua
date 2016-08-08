@@ -8,7 +8,6 @@
 ]]
 
 BetterRep = {
-	["L"] = {}, -- Localization
 	["Constants"] = {
 		["LANDING_BUTTONS_PER_ROW"] = 3,
 	},
@@ -16,7 +15,6 @@ BetterRep = {
 
 -- Local short-cuts.
 local B = BetterRep;
-local L = BetterRep.L;
 local C = BetterRep.Constants;
 
 B.ShowFrame = function()
@@ -221,7 +219,7 @@ B.ShowLanding = function()
 	end
 
 	-- Finish details and show the frame.
-	B.HeaderText:SetText(L.HEADER_REPUTATION);
+	B.HeaderText:SetText(REPUTATION);
 	B.Header:SetTexture([[Interface\GLUES\LOADINGSCREENS\LoadScreenOldStrathome]]);
 	B.Header:SetTexCoord(0, 1, 0.56, 0.65);
 end
