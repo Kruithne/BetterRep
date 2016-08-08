@@ -278,24 +278,35 @@ B.ShowReputation = function()
 	-- Create rep bars.
 	local factionList = B.Factions[B.CurrentExpansion];
 	local playerFaction = UnitFactionGroup("player");
+	local _, playerRace = UnitRace("player");
 	local realIndex = 1;
 
 	for react, factions in pairs(factionList) do
 		if react == "All" or playerFaction == react then
 			for i = 1, #factions do
-				local factionName, desc, standing, barMin, barMax, barValue = GetFactionInfoByID(factions[i]);
-				local bar = B.Helper_CreateRepBar(realIndex);
+				local factionID = factions[i];
+				local skip = false;
 
-				local colour = FACTION_BAR_COLORS[standing];
-				bar:SetStatusBarColor(colour.r, colour.g, colour.b, 1);
+				-- Skipping rules.
+				if factionID == 1216 and playerRace ~= "Pandaren" then
+					skip = true;
+				end
 
-				bar.text:SetText(_G["FACTION_STANDING_LABEL" .. standing]);
-				bar.title:SetText(factionName);
-				bar:SetMinMaxValues(barMin, barMax);
-				bar:SetValue(barValue);
-				bar:Show();
+				if not skip then
+					local factionName, desc, standing, barMin, barMax, barValue = GetFactionInfoByID(factionID);
+					local bar = B.Helper_CreateRepBar(realIndex);
 
-				realIndex = realIndex + 1;
+					local colour = FACTION_BAR_COLORS[standing];
+					bar:SetStatusBarColor(colour.r, colour.g, colour.b, 1);
+
+					bar.text:SetText(_G["FACTION_STANDING_LABEL" .. standing]);
+					bar.title:SetText(factionName);
+					bar:SetMinMaxValues(barMin, barMax);
+					bar:SetValue(barValue);
+					bar:Show();
+
+					realIndex = realIndex + 1;
+				end
 			end
 		end
 	end
