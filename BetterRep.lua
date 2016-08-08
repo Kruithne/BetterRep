@@ -96,42 +96,52 @@ B.ClearReputationFrame = function()
 	end
 end
 
+B.Helper_CreateTexture = function(frame, data)
+	local tex = frame:CreateTexture(data.name, data.layer);
+
+	if data.size then
+		tex:SetSize(data.size[1], data.size[2]);
+	end
+
+	tex:SetAllPoints(true);
+	tex:SetTexture(data.texture);
+
+	if data.texCoord then
+		tex:SetTexCoord(data.texCoord[1], data.texCoord[2], data.texCoord[3], data.texCoord[4]);
+	end
+
+	return tex;
+end
+
 B.Factory_LandingButton = function(index)
 	local button = CreateFrame("BUTTON", "$parentLandingExpansionButton" .. index, B.Frame);
 	button:SetSize(174, 96);
 	button.id = index;
 
-	local bgImage = button:CreateTexture(nil, "BACKGROUND");
-	bgImage:SetPoint("TOPLEFT", 0, 0);
-	bgImage:SetPoint("BOTTOMRIGHT", 0, 0);
-	bgImage:SetTexCoord(0, 0.68359375, 0, 0.7421875);
-	button.bgImage = bgImage;
+	button.bgImage = B.Helper_CreateTexture(button, {
+		["layer"] = "BACKGROUND",
+		["texCoord"] = {0, 0.68359375, 0, 0.7421875}
+	});
 
 	local text = button:CreateFontString("$parentTitle", "ARTWORK", "GameFontNormalSmall");
 	text:SetSize(150, 0);
 	text:SetPoint("BOTTOM", 0, 15);
 	button.title = text;
 
-	local normalTexture = button:CreateTexture("$parentNormalTexture", "ARTWORK");
-	normalTexture:SetAllPoints(true);
-	normalTexture:SetSize(174, 96);
-	normalTexture:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]]);
-	normalTexture:SetTexCoord(0.00195313, 0.34179688, 0.42871094, 0.52246094);
-	button:SetNormalTexture(normalTexture);
+	local texture = {
+		["size"] = {174, 96},
+		["texture"] = [[Interface\EncounterJournal\UI-EncounterJournalTextures]],
+		["texCoord"] = {0.00195313, 0.34179688, 0.42871094, 0.52246094}
+	};
 
-	local pushedTexture = button:CreateTexture("$parentPushedTexture", "ARTWORK");
-	pushedTexture:SetAllPoints(true);
-	pushedTexture:SetSize(174, 96);
-	pushedTexture:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]]);
-	pushedTexture:SetTexCoord(0.00195313, 0.34179688, 0.33300781, 0.42675781);
-	button:SetPushedTexture(pushedTexture);
+	button:SetNormalTexture(B.Helper_CreateTexture(button, texture));
 
-	local highlightTexture = button:CreateTexture("$parentHighlightTexture", "HIGHLIGHT");
-	highlightTexture:SetAllPoints(true);
-	highlightTexture:SetSize(174, 96);
-	highlightTexture:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]]);
-	highlightTexture:SetTexCoord(0.34570313, 0.68554688, 0.33300781, 0.42675781);
-	button:SetHighlightTexture(highlightTexture);
+	texture.texCoord = {0.00195313, 0.34179688, 0.33300781, 0.42675781};
+	button:SetPushedTexture(B.Helper_CreateTexture(button, texture));
+
+	texture.texCoord = {0.34570313, 0.68554688, 0.33300781, 0.42675781};
+	texture.layer = "HIGHLIGHT";
+	button:SetHighlightTexture(B.Helper_CreateTexture(button, texture));
 
 	button:SetScript("OnClick", B.Event_OnLandingButtonClick);
 
@@ -162,23 +172,40 @@ B.ShowReputation = function()
 		normalTexture:SetTexture([[Interface\BUTTONS\UI-SpellbookIcon-PrevPage-Up]]);
 		button:SetNormalTexture(normalTexture);
 
-		local pushedTexture = button:CreateTexture("$parentNormalTexture", "ARTWORK");
-		pushedTexture:SetAllPoints(true);
-		pushedTexture:SetSize(32, 32);
-		pushedTexture:SetTexture([[Interface\BUTTONS\UI-SpellbookIcon-PrevPage-Down]]);
-		button:SetPushedTexture(pushedTexture);
+		local size = {32, 32};
 
-		local highlightTexture = button:CreateTexture("$parentHighlightTexture", "HIGHLIGHT");
-		highlightTexture:SetAllPoints(true);
-		highlightTexture:SetSize(32, 32);
-		highlightTexture:SetTexture([[Interface\BUTTONS\UI-Common-MouseHilight]]);
-		button:SetHighlightTexture(highlightTexture);
+		button:SetNormalTexture(B.Helper_CreateTexture(button, {
+			["size"] = size,
+			["texture"] = [[Interface\BUTTONS\UI-SpellbookIcon-PrevPage-Up]]
+		}));
+
+		button:SetPushedTexture(B.Helper_CreateTexture(button, {
+			["size"] = size,
+			["texture"] = [[Interface\BUTTONS\UI-SpellbookIcon-PrevPage-Down]]
+		}));
+
+		button:SetHighlightTexture(B.Helper_CreateTexture(button, {
+			["size"] = size,
+			["texture"] = [[Interface\BUTTONS\UI-Common-MouseHilight]],
+			["layer"] = "HIGHLIGHT"
+		}));
 
 		button:SetScript("OnClick", B.ShowLanding);
-
 		B.BackButton = button;
 	end
 	B.BackButton:Show();
+
+	local factionList = B.Factions[B.CurrentExpansion];
+	local playerFaction = UnitFactionGroup("player");
+
+	for react, factions in pairs(factionList) do
+		if react == "All" or playerFaction == react then
+			for i = 1, #factions do
+				local factionName = GetFactionInfoByID(factions[i]);
+				print(factionName);
+			end
+		end
+	end
 end
 
 B.ShowLanding = function()
