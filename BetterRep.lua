@@ -214,6 +214,8 @@ B.Helper_CreateRepBar = function(index)
 	bar.text = text;
 
 	local title = bar:CreateFontString("$parentTitle", "OVERLAY", "Game15Font_o1");
+	local fontFile, fontSize, fontFlag = title:GetFont();
+	title:SetFont(fontFile, 12, fontFlag);
 	title:SetPoint("BOTTOMLEFT", bar, "TOPLEFT", 5, 5);
 	bar.title = title;
 
@@ -231,6 +233,7 @@ B.Helper_CreateRepBar = function(index)
 	end
 
 	bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]]);
+	bar:GetStatusBarTexture():SetDrawLayer("BORDER");
 
 	--bar:GetStatusBarTexture():SetDrawLayer("BORDER");
 	return bar;
