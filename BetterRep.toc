@@ -2,7 +2,7 @@
 ## Title: BetterRep
 ## Notes: Alternative reputation display
 ## Author: Kruithne
-## Version: 1.1.0
+## Version: 1.0.1
 
 ## X-Curse-Project-ID: better-rep
 ## X-License: All Rights Reserved. Modifications welcome on GitHub: https://github.com/Kruithne/BetterRep
