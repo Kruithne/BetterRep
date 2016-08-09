@@ -18,6 +18,47 @@ BetterRep = {
 local B = BetterRep;
 local C = BetterRep.Constants;
 
+local eventFrame = CreateFrame("FRAME");
+eventFrame:RegisterEvent("ADDON_LOADED");
+eventFrame:SetScript("OnEvent", function(self, event, ...)
+	if event == "ADDON_LOADED" then
+		local addon = ...;
+		if addon == "BetterRep" then
+			ReputationFrame:HookScript("OnShow", B.HookRepFrame);
+		end
+	end
+end);
+
+B.HookRepFrame = function()
+	if BetterRepButton == nil then
+		local button = CreateFrame("FRAME", "BetterRepButton", ReputationFrame);
+		button:SetPoint("CENTER", ReputationFrame, "TOP", 15, -43);
+		button:SetSize(193, 36);
+
+		local tex = button:CreateTexture();
+		tex:SetTexture([[Interface\Scenarios\SCENARIOSPARTS]]);
+		tex:SetTexCoord(0, 0.376953125, 0.634765625, 0.705078125);
+		tex:SetAllPoints(true);
+
+		local text = button:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
+		text:SetSize(193, 0);
+		text:SetPoint("CENTER", 0, 1);
+		text:SetText(SHOW .. " BetterRep");
+
+		button:SetScript("OnMouseDown", B.ShowFrameForce);
+	end
+
+	ReputationFrameFactionLabel:Hide();
+	ReputationFrameStandingLabel:Hide();
+
+	BetterRepButton:Show();
+end
+
+B.ShowFrameForce = function()
+	CloseAllWindows();
+	B.ShowFrame();
+end
+
 B.ShowFrame = function()
 	if B.Frame == nil then
 		B.CreateFrame();
@@ -241,6 +282,7 @@ B.Helper_CreateRepBar = function(index)
 
 	bar:SetScript("OnEnter", B.Event_OnRepBarEnter);
 	bar:SetScript("OnLeave", B.Event_OnRepBarLeave);
+	bar:SetScript("OnMouseDown", B.Event_OnRepBarMouseDown);
 
 	return bar;
 end
@@ -251,6 +293,19 @@ end
 
 B.Event_OnRepBarLeave = function(self)
 	self.text:SetText(self.dataText);
+end
+
+B.Event_OnRepBarMouseDown = function(self)
+	ExpandAllFactionHeaders();
+	for i = 1, GetNumFactions() do
+		local name = GetFactionInfo(i);
+		if name == self.dataFactionName then
+			PlaySound("igMainMenuOptionCheckBoxOn");
+			SetWatchedFactionIndex(i);
+			SetWatchingHonorAsXP(false);
+			break;
+		end
+	end
 end
 
 B.ShowReputation = function()
@@ -326,6 +381,7 @@ B.ShowReputation = function()
 
 					bar.dataText = bar.text:GetText();
 					bar.dataValues = barValue - barMin .. " / " .. barMax - barMin;
+					bar.dataFactionName = factionName;
 
 					realIndex = realIndex + 1;
 				end
