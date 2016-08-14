@@ -1,3 +1,6 @@
+** Version 1.0.3 **
+* A key-binding can now be set in the Blizzard key-binding panel to open BetterRep.
+
 ** Version 1.0.2 **
 * Clicking on a reputation bar now sets it as the tracked reputation.
 * Added a button to the default reputation frame to access BetterRep.

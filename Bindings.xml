@@ -1,0 +1,5 @@
+<Bindings>
+	<Binding name="BETTER_REP_OPEN" runOnUp="true" header="BETTER_REP" default="SHIFT-U">
+		BetterRep.ShowFrame();
+	</Binding>
+</Bindings>

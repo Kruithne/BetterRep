@@ -14,6 +14,9 @@ BetterRep = {
 	},
 };
 
+BINDING_HEADER_BETTER_REP = "BetterRep";
+BINDING_NAME_BETTER_REP_OPEN = "Open reputation frame";
+
 -- Local short-cuts.
 local B = BetterRep;
 local C = BetterRep.Constants;
