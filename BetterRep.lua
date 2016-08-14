@@ -76,6 +76,13 @@ B.ShowFrame = function()
 	B.Frame:Show();
 end
 
+B.Event_OnFrameKeyDown = function(self, key)
+	if GetBindingFromClick(key) == "TOGGLEGAMEMENU" then
+		-- Hide our frame.
+		B.Frame:Hide();
+	end
+end
+
 B.CreateFrame = function()
 	local frame = CreateFrame("FRAME", "BetterRepFrame", UIParent);
 	frame:SetPoint("CENTER", 0, 0);
@@ -91,6 +98,10 @@ B.CreateFrame = function()
 			bottom = 11
 		}
 	});
+
+	-- Allow frame to intercept keyboard input.
+	frame:EnableKeyboard(true);
+	frame:SetScript("OnKeyDown", B.Event_OnFrameKeyDown);
 
 	-- Header
 	local header = frame:CreateTexture(nil, "BACKGROUND");
