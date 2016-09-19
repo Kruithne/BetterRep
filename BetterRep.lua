@@ -77,7 +77,8 @@ B.ShowFrame = function()
 end
 
 B.Event_OnFrameKeyDown = function(self, key)
-	if GetBindingFromClick(key) == "TOGGLEGAMEMENU" then
+	local binding = GetBindingFromClick(key);
+	if binding == "TOGGLEGAMEMENU" or binding == "BETTER_REP_OPEN" then
 		-- Hide our frame.
 		B.Frame:Hide();
 	end
