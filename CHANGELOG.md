@@ -1,3 +1,6 @@
+** Version 1.0.4 **
+* Pressing the defined key-binding while the frame is open will now close BetterRep.
+
 ** Version 1.0.3 **
 * A key-binding can now be set in the Blizzard key-binding panel to open BetterRep.
 * Pressing your TOGGLEGAMEMENU key-bind (ESC by default) now closes BetterRep.
