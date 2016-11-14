@@ -5,7 +5,9 @@
 ## Version: 1.0.4
 
 ## X-Curse-Project-ID: better-rep
+## X-GitHub-Repo: Kruithne/BetterRep
 ## X-License: All Rights Reserved. Modifications welcome on GitHub: https://github.com/Kruithne/BetterRep
+## X-Localization: enUS
 
 BetterRep.lua
 BetterRepData.lua
